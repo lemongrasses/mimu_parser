@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 {
     char *filename = argv[1];
     FILE* inputfp = fopen(filename, "r");
-    FILE* outputfp = fopen("outdata/mimudata.txt", "w");
+    FILE* outputfp = fopen("mimudata.txt", "w");
     char readbuff;
     char data[2];
     char num_data[4];
