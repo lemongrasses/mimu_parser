@@ -49,7 +49,7 @@ float readFloatData(FILE* file, int len) {
 }
 
 void parseData(FILE* file, imuDataPointer result, int32_t len) {
-    result->time = (uint32_t)readData(file,8);
+    result->time = (float)((uint32_t)readData(file,8)) / (pow(16,6));
     result->pressure = (float)((int32_t)readData(file,8)) / (2 << 11);
     result->pressure_temp = (float)((int16_t)readData(file,4)) / 480 + 42.5;
     result->accx1 = (float)((int16_t)readData(file,4)) * 9.79 / (2 << 10);
@@ -101,8 +101,10 @@ void parseData(FILE* file, imuDataPointer result, int32_t len) {
 int main(int argc, char *argv[])
 {
     char *filename = argv[1];
+    char parsed_file[255] = "parsed_";
+    strcat(parsed_file,filename);
     FILE* inputfp = fopen(filename, "r");
-    FILE* outputfp = fopen("mimudata.txt", "w");
+    FILE* outputfp = fopen(parsed_file, "w");
     char readbuff;
     char data[2];
     char num_data[4];

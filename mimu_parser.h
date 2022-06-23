@@ -7,10 +7,11 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <math.h>
 
 typedef struct imuData *imuDataPointer;
 struct imuData {
-    uint32_t time;
+    float time;
     float pressure;
     float pressure_temp;
     float accx1;
@@ -92,7 +93,7 @@ float readFloatData(FILE* file, int len);
 void parseData(FILE* file, imuDataPointer result, int32_t len);
 
 void dumpData(FILE* file, imuDataPointer result) {
-    fprintf(file, "%u, %f, %f, %f, %f, %f, %f, %f, %f, \
+    fprintf(file, "%f, %f, %f, %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
