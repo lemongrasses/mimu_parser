@@ -60,6 +60,12 @@ struct imuData {
     int16_t checksum;
 }imuData;
 
+char *base_name(char *pathname)
+{
+    char *lastsep = strrchr(pathname, '/');
+    return lastsep ? lastsep+1 : pathname;
+}
+
 int hex2int(char ch)
 {
     if (ch >= '0' && ch <= '9')
@@ -73,6 +79,7 @@ int hex2int(char ch)
 
 int16_t concat_8(int8_t a, int8_t b)
 {
+
     return a << 4 | (b & 0x0f);
 }
 
@@ -86,11 +93,13 @@ int64_t concat_32(int8_t a1, int8_t b1, int8_t c1, int8_t d1, int8_t a2, int8_t 
     return (int32_t)concat_16(a1, b1, c1, d1) << 16 | ((int32_t)concat_16(a2, b2, c2, d2) & 0x0000ffff);
 }
 
-int32_t readData(FILE* file, int len);
+int32_t readData(FILE* file, int len, int16_t *cal_checksum);
 
-float readFloatData(FILE* file, int len);
+int32_t readChecksum(FILE* file, int len);
 
-void parseData(FILE* file, imuDataPointer result, int32_t len);
+float readFloatData(FILE* file, int len, int16_t *cal_checksum);
+
+int16_t parseData(FILE* file, imuDataPointer result, int32_t len, int16_t *cal_checksum);
 
 void dumpData(FILE* file, imuDataPointer result) {
     fprintf(file, "%f, %f, %f, %f, %f, %f, %f, %f, %f, \
