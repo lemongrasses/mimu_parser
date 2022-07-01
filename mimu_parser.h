@@ -101,15 +101,15 @@ float readFloatData(FILE* file, int len, int16_t *cal_checksum);
 
 int16_t parseData(FILE* file, imuDataPointer result, int32_t len, int16_t *cal_checksum);
 
-void dumpData(FILE* file, imuDataPointer result) {
-    fprintf(file, "%f, %f, %f, %f, %f, %f, %f, %f, %f, \
+void dumpData(FILE* file, imuDataPointer result, int16_t num) {
+    fprintf(file, "%d, %f, %f, %f, %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, \
 %f, %f, %f, %f, %f, %f, %f, %f, %f\n",
-    result->time, result->pressure, result->pressure_temp, 
+    num, result->time, result->pressure, result->pressure_temp, 
     result->accx1, result->accy1, result->accz1, result->gyrox1, result->gyroy1, result->gyroz1,
     result->accx2, result->accy2, result->accz2, result->gyrox2, result->gyroy2, result->gyroz2, 
     result->accx3, result->accy3, result->accz3, result->gyrox3, result->gyroy3, result->gyroz3, 

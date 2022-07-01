@@ -89,7 +89,7 @@ float readFloatData(FILE* file, int len, int16_t *cal_checksum) {
 }
 
 int16_t parseData(FILE* file, imuDataPointer result, int32_t len, int16_t *cal_checksum) {
-    result->time = (float)((uint32_t)readData(file,8,cal_checksum)) / (pow(16,6));
+    result->time = (float)((uint32_t)readData(file,8,cal_checksum)) / 16000000;
     result->pressure = (float)((int32_t)readData(file,8,cal_checksum)) / (2 << 11);
     result->pressure_temp = (float)((int16_t)readData(file,4,cal_checksum)) / 480 + 42.5;
     result->accx1 = (float)((int16_t)readData(file,4,cal_checksum)) * 9.79 / (2 << 10);
@@ -150,7 +150,6 @@ int main(int argc, char *argv[])
     FILE* outputfp = fopen(parsed_file, "w");
     char readbuff;
     char data[2];
-    char num_data[4];
     imuDataPointer result = (imuDataPointer)malloc(sizeof(imuData));
     int16_t head;
     int count = 0;
@@ -179,8 +178,9 @@ int main(int argc, char *argv[])
                     len = (int16_t)readData(inputfp,2,cal_checksum);
                     pack_checksum = parseData(inputfp,result,len,cal_checksum);
                     *cal_checksum = *cal_checksum % 65536;
+                    printf("calchecksum : %d\npackchecksum : %d\n",*cal_checksum,pack_checksum);
                     if(pack_checksum == *cal_checksum)
-                        dumpData(outputfp, result);
+                        dumpData(outputfp, result, num);
                 }
                 free(cal_checksum);
             }
